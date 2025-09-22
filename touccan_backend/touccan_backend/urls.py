@@ -24,9 +24,8 @@ from products.views import api_root
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", api_root, name="api-root"),
-    path("api/", include("products.urls")),
-    path("admin/", admin.site.urls)
-    path("teste", "Retornado")
+    path("api/products/", include("products.urls")),
+    path("api/users/", include("users.urls")),
 ]
 
 if settings.DEBUG:
