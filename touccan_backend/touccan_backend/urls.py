@@ -25,6 +25,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", api_root, name="api-root"),
     path("api/", include("products.urls")),
+    path("admin/", admin.site.urls)
+    path("teste", "Retornado")
 ]
 
 if settings.DEBUG:
