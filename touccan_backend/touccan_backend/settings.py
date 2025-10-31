@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-qd6p=@cb5yu+=vu*9plnisjon#_ji%lvh^2dp*^ivbbgpwo-ub
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "products",
-    "users",
+    'users',
+    'merchants',
+    'products',
+    'orders',
     "rest_framework",
     "django_filters",
     "corsheaders",
@@ -81,9 +83,9 @@ WSGI_APPLICATION = "touccan_backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "loja_virtual",
-        "USER": "thais",
-        "PASSWORD": "Senha@123",
+        "NAME": "ecommerce",
+        "USER": "",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "3306"
     }

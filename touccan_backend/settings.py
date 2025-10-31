@@ -31,12 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'django_filters',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # apps locais
+    'users',
+    'merchants',
+    'products',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -75,7 +83,7 @@ WSGI_APPLICATION = "touccan_backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "loja_virtual",
+        "NAME": "ecommerce",
         "USER": "thais",
         "PASSWORD": "Senha@123",
         "HOST": "localhost",
