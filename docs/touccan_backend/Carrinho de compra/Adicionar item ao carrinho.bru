@@ -1,0 +1,31 @@
+meta {
+  name: Adicionar item ao carrinho
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{touccan_url}}carts/add/
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{authToken}}
+}
+
+body:json {
+  {
+    "product_id": 1,
+    "quantity": 10
+  }
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}

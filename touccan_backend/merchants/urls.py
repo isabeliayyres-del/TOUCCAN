@@ -1,7 +1,7 @@
-from django.urls import path
-from .views import MerchantListView, MerchantDetailView
+from rest_framework.routers import DefaultRouter
+from .views import MerchantViewSet
 
-urlpatterns = [
-    path('', MerchantListView.as_view(), name='merchant-list'),
-    path('<int:pk>/', MerchantDetailView.as_view(), name='merchant-detail'),
-]
+router = DefaultRouter()
+router.register(r'', MerchantViewSet)
+
+urlpatterns = router.urls

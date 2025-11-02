@@ -1,0 +1,24 @@
+meta {
+  name: Lista de usuarios
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{touccan_url}}users
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{authToken}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

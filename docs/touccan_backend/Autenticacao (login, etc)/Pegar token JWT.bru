@@ -1,0 +1,29 @@
+meta {
+  name: Pegar token JWT
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{touccan_url}}auth/token/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "username": "joao",
+      "password": "senha123"
+  }
+}
+
+script:post-response {
+  console.log(res.body.access);
+  
+  bru.setVar("authToken", res.body.access);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

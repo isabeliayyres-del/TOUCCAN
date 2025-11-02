@@ -1,7 +1,7 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
-class User(models.Model):
+class User(AbstractUser):
     USER_TYPES = [
         ('customer', 'Customer'),
         ('merchant', 'Merchant'),
@@ -13,11 +13,11 @@ class User(models.Model):
     gender = models.CharField(max_length=20, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+    # country = models.CharField(max_length=100, blank=True, null=True)
     user_type = models.CharField(max_length=20, choices=USER_TYPES, default='customer')
 
     def __str__(self):
-        return self.full_name
+        return self.username
     
     class Meta:
         db_table = 'users'     

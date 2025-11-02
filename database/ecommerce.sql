@@ -7,14 +7,13 @@ CREATE TABLE `users` (
   `gender` varchar(20),
   `date_of_birth` date,
   `created_at` datetime,
-  `country` varchar(100)
+  `user_type` ENUM('customer', 'merchant') DEFAULT 'customer'
 );
 
 CREATE TABLE `merchants` (
   `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `admin_id` BIGINT,
   `merchant_name` varchar(255),
-  `country` varchar(100),
   `created_at` datetime
 );
 
@@ -48,6 +47,25 @@ CREATE TABLE `order_items` (
   `quantity` int
 );
 
+CREATE TABLE `carts` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+);
+
+CREATE TABLE `cart_items` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `cart_id` BIGINT NOT NULL,
+  `product_id` BIGINT NOT NULL,
+  `quantity` INT DEFAULT 1,
+  FOREIGN KEY (`cart_id`) REFERENCES `carts`(`id`),
+  FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+);
+
+
 ALTER TABLE `orders` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `order_items` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
@@ -62,4 +80,4 @@ ALTER TABLE `categories` ADD FOREIGN KEY (`parent_id`) REFERENCES `categories` (
 
 ALTER TABLE `merchants` ADD FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`); 
 
-ALTER TABLE `users` ADD COLUMN `user_type` ENUM('customer', 'merchant') DEFAULT 'customer';
+-- ALTER TABLE `users` ADD COLUMN `user_type` ENUM('customer', 'merchant') DEFAULT 'customer';
