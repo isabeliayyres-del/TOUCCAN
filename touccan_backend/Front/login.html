@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesse sua conta</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-left-section">
+      <img src="assets/logo.png" alt="Logo" class="login-logo">
+      <h1>Acesse a sua conta</h1>
+      <p>Gerencie e organize suas tarefas de forma eficiente, rápida e segura</p>
+    </div>
+
+    <div class="login-right-section">
+      <form action="home.html" method="GET">
+        <div class="login-input-group">
+          <label for="email">
+            <span class="login-icon">
+              <img src="assets/email.png" alt="Cadeado" style="width:18px; height:18px; vertical-align:middle;">
+            </span>
+            <input type="email" id="email" name="email" placeholder="Seu e-mail aqui" required>
+          </label>
+        </div>
+
+        <div class="login-input-group">
+          <label for="senha">
+            <span class="login-icon">
+              <img src="assets/cadeado.png" alt="Cadeado" style="width:18px; height:18px; vertical-align:middle;">
+            </span>
+            <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
+          </label>
+        </div>
+
+        <button type="submit" class="login-btn-entrar">ENTRAR</button>
+
+        <a href="#" class="login-link">Esqueci a senha</a>
+
+        <p class="login-criar-conta">
+          Ainda não tem uma conta?
+          <a href="criar-conta.html" class="login-link-criar">Criar conta</a>
+        </p>
+      </form>
+    </div>
+  </div>
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const emailInput = document.querySelector("#email").value;
+      const senhaInput = document.querySelector("#senha").value;
+
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+      if (!usuario) {
+        alert("Nenhuma conta foi criada ainda!");
+        return;
+      }
+
+      if (emailInput !== usuario.email) {
+        alert("E-mail incorreto!");
+        return;
+      }
+
+      if (senhaInput !== usuario.senha) {
+        alert("Senha incorreta!");
+        return;
+      }
+
+      localStorage.setItem("logado", "sim");
+      window.location.href = "index.html";
+    });
+  </script>
+
+
+
+</body>
+</html>

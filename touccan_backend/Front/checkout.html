@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Touccan — Carrinho</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="carrinho-body">
+
+  <header class="header">
+    <a class="btn-voltar" onclick="history.back()">
+      <img src="assets/seta-branca.png" alt="Voltar">
+    </a>
+    <div class="logo">
+      <img src="assets/logo.png" alt="Touccan logo">
+      <span>Touccan</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Início</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="meu-perfil.html">Meu Perfil</a>
+    </nav>
+  </header>
+
+  <main class="carrinho-main">
+
+    <section class="carrinho-container">
+
+      <h1 class="carrinho-title">Meu Carrinho</h1>
+
+      <div class="carrinho-items">
+
+        <div class="carrinho-item">
+          <img src="assets/produto1.png" alt="">
+          <div class="carrinho-info">
+            <p class="carrinho-name">Ração para sabiá 5kg - Nativos</p>
+            <span class="carrinho-price">R$125,99</span>
+          </div>
+          <button class="carrinho-remove">Remover</button>
+        </div>
+
+        <div class="carrinho-item">
+          <img src="assets/produto2.png" alt="">
+          <div class="carrinho-info">
+            <p class="carrinho-name">Ração para sabiá 5kg - Nativos</p>
+            <span class="carrinho-price">R$125,99</span>
+          </div>
+          <button class="carrinho-remove">Remover</button>
+        </div>
+
+      </div>
+
+      <div class="carrinho-summary">
+        <p>Total:</p>
+        <h2 class="carrinho-total">R$251,98</h2>
+        <button class="carrinho-btn">Finalizar Compra</button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer-carrinho">
+    <p>Copyright © TOUCCAN 2025-2025</p>
+  </footer>
+
+  <script>
+    function carregarCarrinho() {
+      const area = document.querySelector(".carrinho-items");
+      const totalEl = document.querySelector(".carrinho-total");
+
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+      if (carrinho.length === 0) {
+        area.innerHTML = "<p>Seu carrinho está vazio.</p>";
+        totalEl.innerText = "R$0,00";
+        return;
+      }
+
+      area.innerHTML = "";
+      let total = 0;
+
+      carrinho.forEach((produto, index) => {
+        total += produto.preco;
+
+        area.innerHTML += `
+          <div class="carrinho-item">
+            <img src="${produto.imagem}">
+            <div class="carrinho-info">
+              <p class="carrinho-name">${produto.nome}</p>
+              <span class="carrinho-price">R$${produto.preco.toFixed(2)}</span>
+            </div>
+            <button class="carrinho-remove" data-index="${index}">Remover</button>
+          </div>
+        `;
+      });
+
+      totalEl.innerText = "R$" + total.toFixed(2);
+
+      // Ativar botões remover
+      document.querySelectorAll(".carrinho-remove").forEach(btn => {
+        btn.addEventListener("click", () => {
+          let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+          carrinho.splice(btn.dataset.index, 1);
+          localStorage.setItem("carrinho", JSON.stringify(carrinho));
+          carregarCarrinho();
+        });
+      });
+    }
+
+    carregarCarrinho();
+
+    // Finalizar compra — limpa o localStorage
+    document.querySelector(".btn-finalizar")?.addEventListener("click", () => {
+      localStorage.removeItem("carrinho");
+      alert("Compra finalizada!");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

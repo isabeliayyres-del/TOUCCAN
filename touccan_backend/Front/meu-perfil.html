@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Touccan — Meu Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="meu-perfil-body">
+
+  <header class="header">
+    <a class="btn-voltar" onclick="history.back()">
+      <img src="assets/seta-branca.png" alt="Voltar">
+    </a>
+    <div class="logo">
+      <img src="assets/logo.png" alt="Touccan logo">
+      <span>Touccan</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Início</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="carrinho.html">Carrinho</a>
+      <a href="meu-perfil.html" class="btn cta">Meu Perfil</a>
+    </nav>
+  </header>
+
+  <main class="perfil-main">
+
+    <section class="perfil-container">
+      <h1 class="perfil-title">Meu Perfil</h1>
+
+      <div class="perfil-info-box">
+        <img src="assets/user.png" class="perfil-avatar" alt="Foto do usuário">
+
+        <div class="perfil-details">
+          <p><strong>Nome:</strong> Usuário Touccan</p>
+          <p><strong>Email:</strong> usuario@touccan.com</p>
+          <p><strong>Telefone:</strong> (11) 90000-0000</p>
+        </div>
+      </div>
+
+      <div class="perfil-actions">
+        <button class="perfil-btn">Editar Informações</button>
+        <button class="perfil-btn logout">Sair da Conta</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Copyright © TOUCCAN 2025-2025</p>
+  </footer>
+
+
+  <script>
+    function carregarPerfil() {
+      const user = JSON.parse(localStorage.getItem("usuario"));
+      const logado = localStorage.getItem("logado");
+
+      if (!logado || !user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Foto
+      document.querySelector(".perfil-avatar").src = user.foto || "assets/user.png";
+
+      // Dados pessoais
+      let html = `
+        <p><strong>Nome:</strong> ${user.nome}</p>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>Telefone:</strong> ${user.telefone}</p>
+      `;
+
+      // Endereço (se existir)
+      if (user.endereco) {
+        html += `
+          <hr style="margin: 12px 0; border: 0; border-top: 1px solid #ccc;">
+          <p><strong>Endereço:</strong></p>
+          <p><strong>Rua:</strong> ${user.endereco.rua}</p>
+          <p><strong>Bairro:</strong> ${user.endereco.bairro}</p>
+          <p><strong>Cidade:</strong> ${user.endereco.cidade}</p>
+          <p><strong>Estado:</strong> ${user.endereco.estado}</p>
+          <p><strong>CEP:</strong> ${user.endereco.cep}</p>
+          <p><strong>Número:</strong> ${user.endereco.numero}</p>
+          <p><strong>Complemento:</strong> ${user.endereco.complemento || "—"}</p>
+        `;
+      }
+
+      document.querySelector(".perfil-details").innerHTML = html;
+    }
+
+    carregarPerfil();
+
+    document.querySelector(".logout").addEventListener("click", () => {
+      localStorage.removeItem("logado");
+      window.location.href = "index.html";
+    });
+  </script>
+
+
+</body>
+</html>
