@@ -1,0 +1,219 @@
+<!doctype html> 
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Touccan — Criar Conta</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+ 
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="crie_conta-body">
+
+
+  <header class="crie_conta-header">
+    <div class="crie_conta-header-left">
+      <a class="btn-voltar" onclick="history.back()">
+        <img src="assets/seta-branca.png" alt="Voltar">
+      </a>
+      <span class="crie_conta-page-title">Criar conta</span>
+    </div>
+
+    <div class="crie_conta-logo">
+      <img src="assets/logo.png" alt="Touccan" class="crie_conta-logo-img" />
+      <span class="crie_conta-logo-text">Touccan</span>
+    </div>
+  </header>
+
+  
+  <main class="crie_conta-main">
+    <section class="crie_conta-card">
+
+      <div class="crie_conta-left">
+        <div class="crie_conta-avatar-wrap">
+          <div class="crie_conta-avatar">
+            <img id="preview_foto" src="" alt="" style="display:none; width:80px; height:80px; border-radius:50%; object-fit:cover;">
+            <svg width="80" height="80" viewBox="0 0 24 24" class="crie_conta-avatar-icon" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.2" fill="#e6e6e6"></circle>
+              <path d="M4 20c0-3.3 4.5-6 8-6s8 2.7 8 6" fill="#e6e6e6"></path>
+            </svg>
+            <button class="crie_conta-avatar-camera" aria-label="Adicionar foto" onclick="document.getElementById('foto_perfil').click()">
+              📷
+            </button>
+
+            <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*" style="display:none;">
+          </div>
+        </div>
+
+        <h2 class="crie_conta-left-title">Crie uma conta</h2>
+
+        <p class="crie_conta-left-text">
+          O que está esperando? Garanta já a sua compra, e aproveite as ofertas especiais que preparamos para você.
+          Na nossa plataforma, você tem tudo o que precisa, com segurança, praticidade e o melhor preço.
+        </p>
+
+        <p class="crie_conta-left-login">
+          Já tem uma conta?
+          <a class="crie_conta-left-login-link" href="login.html">Entrar</a>
+        </p>
+      </div>
+
+      <div class="crie_conta-divider" aria-hidden="true"></div>
+
+      <div class="crie_conta-right">
+        
+        <form class="crie_conta-form" action="criar-senha.html" method="post" novalidate>
+          <label class="crie_conta-label">
+            Nome de Usuário
+            <input class="crie_conta-input" type="text" name="username" placeholder="abracadaba santos" required />
+          </label>
+
+          <label class="crie_conta-label">
+            Email
+            <input class="crie_conta-input" type="email" name="email" placeholder="abracadaba@santos.com.br" required />
+          </label>
+
+          <label class="crie_conta-label">
+            CPF
+            <input class="crie_conta-input" type="text" name="cpf" placeholder="000.000.000-00" required />
+          </label>
+
+          <div class="crie_conta-row">
+            <label class="crie_conta-label crie_conta-half">
+              Data de nascimento
+              <input class="crie_conta-input" type="text" name="nascimento" placeholder="01/01/0000" required />
+            </label>
+
+            <label class="crie_conta-label crie_conta-half">
+              Telefone
+              <input class="crie_conta-input" type="text" name="telefone" placeholder="(11) 96775-5089" required />
+            </label>
+          </div>
+
+          <button type="submit" class="crie_conta-btn">Continuar</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+
+
+
+  <script>
+    const fotoInput = document.getElementById("foto_perfil");
+    const preview = document.getElementById("preview_foto");
+    const svgAvatar = document.querySelector(".crie_conta-avatar svg");
+
+    fotoInput.addEventListener("change", function () {
+      const file = fotoInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+        svgAvatar.style.display = "none";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    document.querySelector("form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.querySelector("input[name='username']").value;
+      const email = document.querySelector("input[name='email']").value;
+      const telefone = document.querySelector("input[name='telefone']").value;
+
+      const reader = new FileReader();
+
+      function salvarUsuario(fotoBase64) {
+        const userData = {
+          nome: username,
+          email: email,
+          telefone: telefone,
+          foto: fotoBase64
+        };
+
+        localStorage.setItem("usuario_temp", JSON.stringify(userData));
+        window.location.href = "criar-senha.html";
+      }
+
+      if (fotoInput.files.length > 0) {
+        reader.onload = () => salvarUsuario(reader.result);
+        reader.readAsDataURL(fotoInput.files[0]);
+      } else {
+        salvarUsuario(null);
+      }
+    });
+  </script>
+
+  <script>
+    function aplicarMascaraCPF(cpf) {
+      cpf = cpf.replace(/\D/g, "");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      return cpf;
+    }
+
+    function aplicarMascaraData(data) {
+      data = data.replace(/\D/g, "");
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
+      return data.substring(0, 10);
+    }
+
+    function aplicarMascaraTelefone(tel) {
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+      tel = tel.replace(/(\d{5})(\d)/, "$1-$2");
+      return tel.substring(0, 15);
+    }
+
+    // Atribui automaticamente aos campos corretos
+    const inputCPF = document.querySelector("input[name='cpf']");
+    const inputData = document.querySelector("input[name='nascimento']");
+    const inputTel = document.querySelector("input[name='telefone']");
+
+    inputCPF.addEventListener("input", () => {
+      inputCPF.value = aplicarMascaraCPF(inputCPF.value);
+    });
+
+    inputData.addEventListener("input", () => {
+      inputData.value = aplicarMascaraData(inputData.value);
+    });
+
+    inputTel.addEventListener("input", () => {
+      inputTel.value = aplicarMascaraTelefone(inputTel.value);
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+

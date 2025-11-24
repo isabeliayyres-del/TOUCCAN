@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Touccan — Criar Senha</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="criar-senha-body">
+
+  
+  <header class="criar-senha-header">
+    <div class="criar-senha-header-left">
+      <a class="btn-voltar" onclick="history.back()">
+        <img src="assets/seta-branca.png" alt="Voltar">
+      </a>
+      <span class="criar-senha-page-title">Criar conta</span>
+    </div>
+
+    <div class="criar-senha-logo">
+      <img src="assets/logo.png" alt="Touccan" class="criar-senha-logo-img" />
+      <span class="criar-senha-logo-text">Touccan</span>
+    </div>
+  </header>
+
+  
+  <main class="criar-senha-main">
+    <section class="criar-senha-card">
+
+      
+      <div class="criar-senha-left">
+        <h2 class="criar-senha-left-title">Crie uma conta</h2>
+        <p class="criar-senha-left-text">
+          O que está esperando? Garanta já a sua compra, e aproveite as ofertas especiais que preparamos para você.
+          Na nossa plataforma, você tem tudo o que precisa, com segurança, praticidade e o melhor preço.
+        </p>
+        <p class="criar-senha-left-login">
+          Já tem uma conta?
+          <a class="criar-senha-left-login-link" href="login.html">Entrar</a>
+        </p>
+      </div>
+
+      
+      <div class="criar-senha-divider" aria-hidden="true"></div>
+
+      
+      <div class="criar-senha-right">
+        <form class="criar-senha-form" action="endereco.html" method="post" novalidate>
+          <label class="criar-senha-label">
+            Senha
+            <div class="criar-senha-input-wrap">
+              <input class="criar-senha-input" type="password" name="senha" required />
+              <button type="button" class="criar-senha-toggle-pass">👁</button>
+            </div>
+          </label>
+
+          <label class="criar-senha-label">
+            Confirmar senha
+            <div class="criar-senha-input-wrap">
+              <input class="criar-senha-input" type="password" name="confirma_senha" required />
+              <button type="button" class="criar-senha-toggle-pass">👁</button>
+            </div>
+          </label>
+
+          
+          <ul class="criar-senha-requisitos">
+            <li>✔ Ser maior que oito caracteres.</li>
+            <li>✘ Conter no mínimo dois caracteres numéricos (0-9).</li>
+            <li>✔ Conter no mínimo um caractere especial (@$%#!).</li>
+            <li>✔ Conter no mínimo uma letra maiúscula.</li>
+          </ul>
+
+          <label class="criar-senha-checkbox">
+            <input type="checkbox" required />
+            Li e concordo com os <a href="#">Termos e Condições</a>
+          </label>
+
+          <button type="submit" class="criar-senha-btn">Continuar</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const senhaInput = document.querySelector('input[name="senha"]');
+    const confirmaInput = document.querySelector('input[name="confirma_senha"]');
+
+    const requisitos = document.querySelectorAll(".criar-senha-requisitos li");
+
+    senhaInput.addEventListener("input", function () {
+      const senha = senhaInput.value;
+
+      
+      if (senha.length > 8) {
+        requisitos[0].textContent = "✔ Ser maior que oito caracteres.";
+      } else {
+        requisitos[0].textContent = "✘ Ser maior que oito caracteres.";
+      }
+
+      
+      const numeros = senha.replace(/[^0-9]/g, "");
+      if (numeros.length >= 2) {
+        requisitos[1].textContent = "✔ Conter no mínimo dois caracteres numéricos (0-9).";
+      } else {
+        requisitos[1].textContent = "✘ Conter no mínimo dois caracteres numéricos (0-9).";
+      }
+
+      
+      const especiais = /[@$%#!]/;
+      if (especiais.test(senha)) {
+        requisitos[2].textContent = "✔ Conter no mínimo um caractere especial (@$%#!).";
+      } else {
+        requisitos[2].textContent = "✘ Conter no mínimo um caractere especial (@$%#!).";
+      }
+
+      
+      const maiuscula = /[A-Z]/;
+      if (maiuscula.test(senha)) {
+        requisitos[3].textContent = "✔ Conter no mínimo uma letra maiúscula.";
+      } else {
+        requisitos[3].textContent = "✘ Conter no mínimo uma letra maiúscula.";
+      }
+    });
+
+    
+    const toggles = document.querySelectorAll(".criar-senha-toggle-pass");
+
+    toggles.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const input = btn.previousElementSibling;
+
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "👁"; 
+        } else {
+          input.type = "password";
+          btn.textContent = "-"; 
+        }
+      });
+    });
+
+    
+    document.querySelector(".criar-senha-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const senha = senhaInput.value;
+      const confirma = confirmaInput.value;
+
+      // Verifica regras
+      const valido =
+        senha.length > 8 &&
+        senha.replace(/[^0-9]/g, "").length >= 2 &&
+        /[@$%#!]/.test(senha) &&
+        /[A-Z]/.test(senha);
+
+      if (!valido) {
+        alert("A senha não atende a todos os requisitos!");
+        return;
+      }
+
+      if (senha !== confirma) {
+        alert("As senhas não coincidem!");
+        return;
+      }
+
+      
+      let usuario = JSON.parse(localStorage.getItem("usuario_temp")) || {};
+      usuario.senha = senha;
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+      localStorage.removeItem("usuario_temp");
+
+      window.location.href = "endereco.html";
+    });
+  </script>
+
+</body>
+</html>
